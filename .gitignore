@@ -205,3 +205,17 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Node.js
+node_modules/
+.env.local
+dist/
+npm-debug.log
+
+# API Keys (extra safety)
+*.env
+secrets.txt
+
+# OS files
+.DS_Store
+Thumbs.db
