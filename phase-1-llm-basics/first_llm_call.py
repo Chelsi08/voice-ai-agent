@@ -11,13 +11,31 @@ client = OpenAI(
     api_key=OPENROUTER_API_KEY  #identity proof 
 )
 
-response = client.chat.completions.create(
-    model="stepfun/step-3.5-flash:free", #model which we are using, llm model of stepfun 
-    messages=[   #list of message, role tells who sent the message, content is actual message 
-        {"role": "user", "content": "Hello! Can you introduce yourself in one sentence?"}  
-    ]
-)
+conversation_history = []  #empty list - to store the conversation (memory)
 
-print(response.choices[0].message.content) #print the reponse, choice because it is list and there can be multiple options, [0] means first response
+while True :   #infinite loop until user writes quit
+    user_input = input("You: ") #till then take the input from user
+
+    if user_input.lower() == "quit":  #if user writes quit, end the conversation
+        break
+
+    conversation_history.append({
+        "role": "user",
+        "content": user_input
+    })
+    
+    response = client.chat.completions.create(
+    model="stepfun/step-3.5-flash:free", #model which we are using, llm model of stepfun 
+    messages= conversation_history #send the whole history not just a single message
+    )
+    
+    ai_reply = response.choices[0].message.content  #get the answer from AI
+    
+    conversation_history.append({   #Store AI's answer in history as well 
+    "role": "assistant",
+    "content" : ai_reply
+    })
+    
+    print(f"AI: {ai_reply}\n") #print the ai reply on screen
 
 
