@@ -24,18 +24,26 @@ while True :   #infinite loop until user writes quit
         "content": user_input
     })
     
-    response = client.chat.completions.create(
-    model="stepfun/step-3.5-flash:free", #model which we are using, llm model of stepfun 
-    messages= conversation_history #send the whole history not just a single message
-    )
+    try :
+        response = client.chat.completions.create(
+            model="stepfun/step-3.5-flash:free", #model which we are using, llm model of stepfun 
+            messages= conversation_history #send the whole history not just a single message
+        )
+        
+        ai_reply = response.choices[0].message.content  #get the answer from AI
+
+        conversation_history.append({   #Store AI's answer in history as well 
+        "role": "assistant",
+        "content" : ai_reply
+        })
+        
+        print(f"AI: {ai_reply}\n") #print the ai reply on screen
+
+    except Exception as e:
+        print(f"Error: {e}")
+        conversation_history.pop()  # remove user's last message from history
+        continue
     
-    ai_reply = response.choices[0].message.content  #get the answer from AI
-    
-    conversation_history.append({   #Store AI's answer in history as well 
-    "role": "assistant",
-    "content" : ai_reply
-    })
-    
-    print(f"AI: {ai_reply}\n") #print the ai reply on screen
+
 
 
