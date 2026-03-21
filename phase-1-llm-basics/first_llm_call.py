@@ -25,19 +25,30 @@ while True :   #infinite loop until user writes quit
     })
     
     try :
-        response = client.chat.completions.create(
+        response = client.chat.completions.create ( 
             model="stepfun/step-3.5-flash:free", #model which we are using, llm model of stepfun 
-            messages= conversation_history #send the whole history not just a single message
+            messages= conversation_history,#send the whole history not just a single message
+            stream=True  #response will be in word by word
         )
         
-        ai_reply = response.choices[0].message.content  #get the answer from AI
+        ai_reply = ""  #empty string - words will be added by here 
+
+        print("AI: ", end="", flush=True)  #First print AI:
+
+
+        for chunk in response : #every word from agent comes in chunks
+            if chunk.choices[0].delta.content:    #if the chunk has content
+                word = chunk.choices[0].delta.content
+                print(word, end="", flush=True)  #print word by word
+                ai_reply += word 
+        
+        print("\n")  #after response ends get to the new line
 
         conversation_history.append({   #Store AI's answer in history as well 
         "role": "assistant",
         "content" : ai_reply
         })
         
-        print(f"AI: {ai_reply}\n") #print the ai reply on screen
 
     except Exception as e:
         print(f"Error: {e}")
