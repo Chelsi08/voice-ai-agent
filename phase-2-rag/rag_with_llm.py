@@ -48,7 +48,7 @@ relevant_docs = results['documents'][0]  # top 3 documents
 # Step 2 — Join the documents in one string
 context = "\n".join(relevant_docs)
 
-# Step 3 — send to LLM with the context
+# Step 3 — send to LLM with context
 response = client.chat.completions.create(
     model="stepfun/step-3.5-flash:free",
     messages=[
