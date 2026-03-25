@@ -219,3 +219,6 @@ secrets.txt
 # OS files
 .DS_Store
 Thumbs.db
+
+#mp3 saved audio files
+*.mp3
