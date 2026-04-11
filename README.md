@@ -47,10 +47,10 @@ User Hears Response
 | Phase 0 | Repo setup, structure | ✅ Done |
 | Phase 1 | LLM API call, conversation history, streaming, error handling | ✅ Done |
 | Phase 2 | RAG + ChromaDB vector database | ✅ Done |
-| Phase 3 | Connect LLM output to TTS + emotion detection | 🔄 In Progress |
-| Phase 4 | STT integration | ⏳ Planned |
-| Phase 5 | Memory system | ⏳ Planned |
-| Phase 6 | Full agent + deployment | ⏳ Planned |
+| Phase 3 | TTS + emotion detection with Murf AI | ✅ Done |
+| Phase 4 | STT with Whisper | ✅ Done |
+| Phase 5 | Persistent memory with SQLite | ✅ Done |
+| Phase 6 | Full voice agent — all components integrated | ✅ Done |
 
 ---
 
@@ -60,21 +60,55 @@ User Hears Response
 |---|---|
 | Language | Python |
 | LLM | OpenRouter API |
+| STT | Whisper (OpenAI) — runs locally |
+| TTS | Murf AI (Falcon) |
 | Vector Database | ChromaDB |
-| TTS | TBD — ElevenLabs / Murf AI / Cartesia (testing in progress) |
-| STT | TBD — evaluating options (Whisper / Google STT) |
-| Deployment | AWS EC2 |
+| Long-term Memory | SQLite |
+| Deployment | AWS EC2 (planned) |
+
+---
+
+## How It Works
+
+1. Whisper listens to user via microphone — converts voice to text
+2. SQLite memory is checked — agent knows who the user is
+3. ChromaDB fetches relevant knowledge from vector database
+4. LLM generates a reply and detects the emotion
+5. Murf AI speaks the reply in the detected emotion
+6. Loop continues — persistent memory across sessions
 
 ---
 
 ## How to Run
 
-1. Clone this repo
-2. Add your API keys in `.env`
-3. Follow each phase folder in order
+```bash
+# Clone the repo
+git clone https://github.com/Chelsi08/voice-ai-agent.git
+
+# Go to phase 6
+cd phase-6-full-agent
+
+# Add your API keys in .env
+OPENROUTER_API_KEY=your_key
+MURF_API_KEY=your_key
+
+# Run the agent
+python agent.py
+```
+
+---
+
+## Key Learnings
+
+- How LLMs work and how to call them via API
+- What RAG is and how vector databases store meaning
+- How STT and TTS pipelines are built
+- How persistent memory works with SQLite
+- How to connect all components into one working system
 
 ---
 
 ## License
 
 MIT
+

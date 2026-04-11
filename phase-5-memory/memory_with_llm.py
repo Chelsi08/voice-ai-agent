@@ -44,7 +44,7 @@ def get_all_memory():   #get all the memory from db
 def extract_and_save_memory(user_message):
     try:
         extraction_response = llm_client.chat.completions.create(
-            model="stepfun/step-3.5-flash:free",
+            model="openai/gpt-oss-120b:free",
             messages=[
                 {
                     "role": "system",
@@ -91,7 +91,7 @@ while True:
 
     try:
         response = llm_client.chat.completions.create(
-            model="stepfun/step-3.5-flash:free",
+            model="openai/gpt-oss-120b:free",
             messages=[
                 {
                     "role": "system",
