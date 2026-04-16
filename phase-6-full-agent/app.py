@@ -6,6 +6,8 @@ import os
 import json
 import requests
 import base64
+import whisper
+import tempfile
 
 load_dotenv()
 
@@ -150,6 +152,20 @@ EMOTION: [one word from: Excited, Sad, Angry, Conversational]"""
     except Exception as e:
         conversation_history.pop()
         return jsonify({"error": str(e)}), 500
+
+
+whisper_model = whisper.load_model("base")
+
+@app.route("/transcribe", methods=["POST"])
+def transcribe():
+    audio_file = request.files["audio"]
+    
+    # Temporary file mein save karo
+    with tempfile.NamedTemporaryFile(suffix=".webm", delete=False) as tmp:
+        audio_file.save(tmp.name)
+        result = whisper_model.transcribe(tmp.name, language="en")
+    
+    return jsonify({"text": result["text"].strip()})
 
 if __name__ == "__main__":
     app.run(debug=True)
