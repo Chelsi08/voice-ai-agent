@@ -8,6 +8,7 @@ import requests
 import base64
 import whisper
 import tempfile
+import signal
 
 load_dotenv()
 
@@ -166,6 +167,11 @@ def transcribe():
         result = whisper_model.transcribe(tmp.name, language="en")
     
     return jsonify({"text": result["text"].strip()})
+
+@app.route("/shutdown", methods=["POST"])
+def shutdown():
+    os.kill(os.getpid(), signal.SIGINT)
+    return jsonify({"message": "Server shutting down..."})
 
 if __name__ == "__main__":
     app.run(debug=True)

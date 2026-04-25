@@ -144,6 +144,19 @@
         #send-btn:hover {
             background: #6366f1;
         }
+        #stop-btn {
+            padding: 10px 20px;
+            border-radius: 12px;
+            border: none;
+            background: #ef4444;
+            color: #fff;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        #stop-btn:hover {
+            background: #dc2626;
+        }
     </style>
 </head>
 <body>
@@ -160,6 +173,7 @@
         <div id="text-input-row">
             <input type="text" id="text-input" placeholder="Or type your message..." />
             <button id="send-btn">Send</button>
+            <button id="stop-btn">⏹ End Conversation</button>
         </div>
     </div>
 
@@ -208,7 +222,7 @@
                 return;
             }
 
-            addBubble(data.reply, "ai", data.emotion);
+            addBubble(data.reply, "ai");
 
             // Audio play karo
             if (data.audio) {
@@ -278,6 +292,17 @@
                     sendMessage(msg);
                 }
             }
+        });
+
+        document.getElementById("stop-btn").addEventListener("click", async () => {
+            addBubble("Conversation ended. Goodbye!", "ai");
+            document.getElementById("mic-btn").disabled = true;
+            document.getElementById("send-btn").disabled = true;
+            document.getElementById("stop-btn").disabled = true;
+            document.getElementById("text-input").disabled = true;
+            status.innerText = "Conversation ended.";
+            
+            await fetch("/shutdown", { method: "POST" });
         });
     </script>
 
